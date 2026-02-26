@@ -6,7 +6,7 @@
     <title>Instagram do Zero | Aprenda do Básico</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -15,28 +15,58 @@
         }
 
         :root {
-            --bg-deep:    #060c1a;
-            --bg-mid:     #0a1628;
-            --bg-card:    #0f1e35;
+            --bg-deep:    #0a0e27;
+            --bg-mid:     #0d1535;
+            --bg-card:    #111d45;
             --neon:       #00d9ff;
             --neon-dim:   rgba(0, 217, 255, 0.15);
-            --neon-glow:  rgba(0, 217, 255, 0.35);
+            --neon-glow:  rgba(0, 217, 255, 0.40);
             --accent:     #3a86ff;
             --success:    #00e5b0;
             --warn:       #ffc340;
             --text:       #e0e9f5;
-            --muted:      #6b85a8;
-            --border:     rgba(0, 217, 255, 0.12);
+            --muted:      #7a96ba;
+            --border:     rgba(0, 217, 255, 0.18);
         }
 
         html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Rajdhani', sans-serif;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
             background: var(--bg-deep);
             color: var(--text);
             line-height: 1.65;
             overflow-x: hidden;
+        }
+
+        /* ─── SCANLINES (estilo terminal/matrix) ─── */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.06) 2px,
+                rgba(0, 0, 0, 0.06) 4px
+            );
+            pointer-events: none;
+            z-index: 9998;
+        }
+
+        /* linha de scan que percorre a tela */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -4px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to bottom, transparent, rgba(0, 217, 255, 0.18), transparent);
+            animation: scanlineMove 6s linear infinite;
+            pointer-events: none;
+            z-index: 9999;
         }
 
         .container {
@@ -72,8 +102,9 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(ellipse 80% 70% at 50% 40%, rgba(0,217,255,0.07) 0%, transparent 70%);
+            background: radial-gradient(ellipse 80% 70% at 50% 40%, rgba(0,217,255,0.10) 0%, transparent 70%);
             pointer-events: none;
+            animation: bgPulse 4s ease-in-out infinite;
         }
 
         .hero-content {
@@ -122,10 +153,12 @@
             margin-bottom: 18px;
             padding: 0 8px;
             color: #fff;
+            text-shadow: 0 0 30px rgba(255,255,255,0.08);
         }
 
         .hero h1 span {
             color: var(--neon);
+            text-shadow: 0 0 20px var(--neon), 0 0 50px var(--neon-glow);
         }
 
         .hero-subtitle {
@@ -156,8 +189,9 @@
             font-weight: 700;
             text-decoration: none;
             letter-spacing: 0.03em;
-            box-shadow: 0 0 30px var(--neon-glow);
-            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 0 30px var(--neon-glow), 0 0 60px rgba(0,217,255,0.2);
+            transition: transform 0.2s;
+            animation: neonPulse 2.5s ease-in-out infinite;
         }
 
         .cta-primary:active {
@@ -190,7 +224,10 @@
             padding: 0 4px;
         }
 
-        .section-title span { color: var(--neon); }
+        .section-title span {
+            color: var(--neon);
+            text-shadow: 0 0 16px var(--neon), 0 0 40px var(--neon-glow);
+        }
 
         .section-lead {
             color: var(--muted);
@@ -215,10 +252,14 @@
             padding: 26px 20px;
             border-radius: 16px;
             border-left: 3px solid var(--neon);
-            transition: border-color 0.2s;
+            box-shadow: 0 0 20px rgba(0,217,255,0.06), inset 0 0 20px rgba(0,217,255,0.02);
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        .pain-card:active { border-left-color: var(--accent); }
+        .pain-card:active {
+            border-left-color: var(--accent);
+            box-shadow: 0 0 30px rgba(0,217,255,0.15);
+        }
 
         .pain-card img {
             width: 100%;
@@ -285,7 +326,8 @@
             border-radius: 18px;
             position: relative;
             overflow: hidden;
-            transition: border-color 0.2s;
+            box-shadow: 0 0 20px rgba(0,217,255,0.05), inset 0 0 20px rgba(0,217,255,0.02);
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
         .benefit-card::before {
@@ -359,6 +401,8 @@
             font-size: 1rem;
             font-weight: 800;
             flex-shrink: 0;
+            animation: borderPulse 3s ease-in-out infinite;
+            text-shadow: 0 0 10px var(--neon);
         }
 
         .module-title h3 {
@@ -453,6 +497,7 @@
             justify-content: center;
             font-size: 2rem;
             margin: 0 auto 22px;
+            animation: successPulse 3s ease-in-out infinite;
         }
 
         .guarantee-box h3 {
@@ -565,6 +610,7 @@
             border-radius: 20px;
             margin: 0 auto 30px;
             box-shadow: 0 0 40px var(--neon-glow);
+            animation: priceGlow 3s ease-in-out infinite;
         }
 
         .old-price {
@@ -581,7 +627,7 @@
             color: var(--neon);
             line-height: 1;
             margin-bottom: 8px;
-            text-shadow: 0 0 20px var(--neon-glow);
+            text-shadow: 0 0 20px var(--neon), 0 0 50px var(--neon-glow), 0 0 80px rgba(0,217,255,0.2);
         }
 
         .installments {
@@ -600,9 +646,10 @@
             font-weight: 800;
             text-decoration: none;
             letter-spacing: 0.02em;
-            box-shadow: 0 0 40px var(--neon-glow);
+            box-shadow: 0 0 40px var(--neon-glow), 0 0 80px rgba(0,217,255,0.2);
             transition: transform 0.2s;
             margin-top: 20px;
+            animation: neonPulse 2s ease-in-out infinite;
         }
 
         .cta-final-button:active { transform: scale(0.95); }
@@ -642,6 +689,48 @@
             background: var(--neon);
             margin: 0 auto 20px;
             box-shadow: 0 0 10px var(--neon);
+        }
+
+        /* ─── KEYFRAMES ─── */
+
+        /* linha de scan percorrendo a tela de cima a baixo */
+        @keyframes scanlineMove {
+            0%   { top: -4px; }
+            100% { top: 100vh; }
+        }
+
+        /* pulso do fundo radial no hero */
+        @keyframes bgPulse {
+            0%, 100% { opacity: 0.7; }
+            50%       { opacity: 1.0; }
+        }
+
+        /* pulso do brilho neon nos botões CTA */
+        @keyframes neonPulse {
+            0%, 100% {
+                box-shadow: 0 0 20px var(--neon-glow), 0 0 40px rgba(0,217,255,0.15);
+            }
+            50% {
+                box-shadow: 0 0 35px var(--neon-glow), 0 0 70px rgba(0,217,255,0.35), 0 0 100px rgba(0,217,255,0.1);
+            }
+        }
+
+        /* pulso da borda nos números dos módulos */
+        @keyframes borderPulse {
+            0%, 100% { box-shadow: 0 0 5px var(--neon-glow); }
+            50%       { box-shadow: 0 0 18px var(--neon), 0 0 30px var(--neon-glow); }
+        }
+
+        /* pulso verde no badge de garantia */
+        @keyframes successPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(0,229,176,0.25); }
+            50%       { box-shadow: 0 0 28px rgba(0,229,176,0.55), 0 0 50px rgba(0,229,176,0.15); }
+        }
+
+        /* pulso na caixa de preço */
+        @keyframes priceGlow {
+            0%, 100% { box-shadow: 0 0 30px var(--neon-glow); }
+            50%       { box-shadow: 0 0 55px var(--neon-glow), 0 0 90px rgba(0,217,255,0.18); }
         }
     </style>
 </head>
